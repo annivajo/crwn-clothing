@@ -2,7 +2,7 @@ import React from "react";
 import './sign-in.styles.scss';
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import {signInWithGoogle} from "../../firebase/firebase.utils";
+import {auth, signInWithGoogle} from "../../firebase/firebase.utils";
 
 class SignIn extends React.Component {
     constructor(props) {
@@ -16,7 +16,16 @@ class SignIn extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.setState({email: '', password: ''});
+
+        const {email, password} = this.state;
+
+        try {
+            auth.signInWithEmailAndPassword(email, password);
+            this.setState({email: '', password: ''});
+        } catch (error) {
+            console.log(error);
+        }
+
     };
 
     handleChange = event => {
@@ -32,19 +41,21 @@ class SignIn extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <FormInput
                         name="email"
+                        type="email"
                         label="email"
                         value={this.state.email}
-                        //required
+                        required
                         handleChange={this.handleChange}/>
                     <FormInput
                         name="password"
+                        type="password"
                         label="password"
                         value={this.state.password}
-                        //required
+                        required
                         handleChange={this.handleChange}/>
                     <div className='buttons'>
                         <CustomButton type="submit">SIGN IN</CustomButton>
-                        <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+                        <CustomButton type="button" onClick={signInWithGoogle} isGoogleSignIn>
                             SIGN IN WITH GOOGLE
                         </CustomButton>
                     </div>
