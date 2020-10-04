@@ -9,7 +9,7 @@ import shopReducer from "./shop/shop.reducer";
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['cart', 'directory', 'shop'] //only cart, because user is persist by firebase
+    whitelist: ['cart'] //only cart, because user is persist by firebase
 };
 
 const rootReducer = combineReducers({
